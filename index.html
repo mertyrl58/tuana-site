@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Giriş • Tuana</title>
+  <style>
+    :root{
+      --bg1:#0b1020; --bg2:#2b145d; --bg3:#000;
+      --card:rgba(255,255,255,.08);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --accent:#a78bfa;
+      --border:rgba(255,255,255,.12);
+      --danger:#ff5a7a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100svh; color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(1100px 600px at 20% 20%, var(--bg2), transparent 60%),
+        radial-gradient(1100px 600px at 85% 75%, #0b3b7a, transparent 60%),
+        linear-gradient(135deg,var(--bg1),var(--bg3));
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
+    .stars, .stars:before, .stars:after{
+      content:""; position:fixed; inset:0; pointer-events:none;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.8), transparent 40%),
+        radial-gradient(1px 1px at 90px 140px, rgba(255,255,255,.6), transparent 40%),
+        radial-gradient(1px 1px at 160px 80px, rgba(255,255,255,.5), transparent 40%),
+        radial-gradient(2px 2px at 240px 160px, rgba(255,255,255,.7), transparent 40%);
+      background-size: 260px 200px;
+      opacity:.22;
+      animation: drift 28s linear infinite;
+    }
+    .stars:before{opacity:.16; animation-duration: 45s; filter: blur(.2px);}
+    .stars:after{opacity:.10; animation-duration: 70s; filter: blur(.6px);}
+    @keyframes drift{ from{transform:translateY(0)} to{transform:translateY(-200px)} }
+
+    .card{
+      width:min(420px, 100%);
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:18px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.30);
+    }
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:9px 12px; border-radius:999px;
+      background:rgba(167,139,250,.12);
+      border:1px solid rgba(167,139,250,.25);
+      font-size:13px;
+    }
+    h1{margin:14px 0 6px; font-size:clamp(22px,6vw,30px); letter-spacing:.2px;}
+    .sub{margin:0 0 14px; color:var(--muted); line-height:1.6; font-size:14px}
+
+    label{display:block; font-size:12px; color:rgba(255,255,255,.72); margin:10px 0 6px}
+    input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      outline:none;
+      min-height:44px;
+    }
+    input:focus{border-color:rgba(167,139,250,.55); box-shadow:0 0 0 3px rgba(167,139,250,.12)}
+    .row{display:grid; gap:10px; grid-template-columns:1fr}
+    .btns{display:flex; gap:10px; margin-top:14px}
+    button{
+      flex:1;
+      border:0; cursor:pointer;
+      padding:12px 14px; border-radius:14px;
+      background:rgba(167,139,250,.18);
+      border:1px solid rgba(167,139,250,.35);
+      color:var(--text);
+      transition:.18s ease;
+      min-height:44px;
+    }
+    button:hover{transform:translateY(-1px); background:rgba(167,139,250,.26)}
+    .ghost{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16)}
+    .err{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,90,122,.10);
+      border:1px solid rgba(255,90,122,.28);
+      color:rgba(255,255,255,.88);
+      display:none;
+      line-height:1.5;
+      font-size:13px;
+    }
+    .mini{margin-top:12px; font-size:12px; color:rgba(255,255,255,.55); text-align:center;}
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="card">
+    <div class="badge">🔒 Özel Giriş • 💜</div>
+    <h1>Tuana’ya Özel Sayfa</h1>
+    <p class="sub">Devam etmek için giriş yap.</p>
+
+    <form id="loginForm" autocomplete="off">
+      <div class="row">
+        <div>
+          <label for="u">Kullanıcı adı</label>
+          <input id="u" name="u" placeholder="kullanıcı adı" required />
+        </div>
+        <div>
+          <label for="p">Şifre</label>
+          <input id="p" name="p" type="password" placeholder="şifre" required />
+        </div>
+      </div>
+
+      <div class="btns">
+        <button type="submit" id="submitBtn">Giriş</button>
+        <button type="button" class="ghost" id="clear">Temizle</button>
+      </div>
+
+      <div class="err" id="err">Hatalı giriş. Tekrar dene.</div>
+      <div class="mini">🖤</div>
+    </form>
+  </div>
+
+  <script>
+    // Daha önce giriş yapıldıysa: son hedefe dön
+    const lastTarget = localStorage.getItem("tuana_target");
+    if (localStorage.getItem("tuana_auth") === "1" && lastTarget) {
+      location.replace(lastTarget);
+    }
+
+    // 1) Normal giriş -> ana.html
+    const USER_ANA = "tuana";
+    const PASS_ANA = "yerli";
+
+    // 2) Özel giriş -> 1.html
+    const USER_ONE = "tuana";  
+    const PASS_ONE = "şahin";
+
+    const form = document.getElementById("loginForm");
+    const err = document.getElementById("err");
+    const u = document.getElementById("u");
+    const p = document.getElementById("p");
+    const submitBtn = document.getElementById("submitBtn");
+
+    document.getElementById("clear").onclick = () => {
+      u.value = ""; p.value = "";
+      err.style.display = "none";
+      u.focus();
+    };
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      err.style.display = "none";
+
+      const uu = (u.value || "").trim().toLowerCase();
+      const pp = (p.value || "").trim();
+
+      // tuana şahin -> 1.html
+      if (uu === USER_ONE && pp === PASS_ONE) {
+        localStorage.setItem("tuana_auth", "1");
+        localStorage.setItem("tuana_user", "tuana");     // kıskanç kontrol uyumu
+        localStorage.setItem("tuana_target", "1.html");  // son hedef
+        submitBtn.textContent = "Açılıyor…";
+        setTimeout(() => location.replace("1.html"), 350);
+        return;
+      }
+
+      // tuana -> ana.html
+      if (uu === USER_ANA && pp === PASS_ANA) {
+        localStorage.setItem("tuana_auth", "1");
+        localStorage.setItem("tuana_user", "tuana");       // kıskanç kontrol uyumu
+        localStorage.setItem("tuana_target", "ana.html");  // son hedef
+        submitBtn.textContent = "Açılıyor…";
+        setTimeout(() => location.replace("ana.html"), 350);
+        return;
+      }
+
+      err.style.display = "block";
+      p.value = "";
+      p.focus();
+    });
+  </script>
+</body>
+</html>

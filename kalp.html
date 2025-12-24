@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kalp Ritmi</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at center,#2b145d,#000);
+  color:white;
+  font-family:system-ui;
+  overflow:hidden;
+}
+
+.heart{
+  width:120px;
+  height:120px;
+  background:#ff4d6d;
+  transform:rotate(45deg);
+  position:relative;
+  animation:beat 1s infinite;
+}
+
+.heart::before,
+.heart::after{
+  content:"";
+  width:120px;
+  height:120px;
+  background:#ff4d6d;
+  border-radius:50%;
+  position:absolute;
+}
+
+.heart::before{ left:-60px; }
+.heart::after{ top:-60px; }
+
+@keyframes beat{
+  0%{transform:scale(1) rotate(45deg);}
+  50%{transform:scale(1.25) rotate(45deg);}
+  100%{transform:scale(1) rotate(45deg);}
+}
+
+.text{
+  margin-top:30px;
+  font-size:18px;
+  opacity:.85;
+}
+
+small{
+  opacity:.6;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="heart" id="heart"></div>
+<div class="text">Yanındayken kalbim böyle.</div>
+<small>(Ekrana dokundukça hızlanır)</small>
+
+<script>
+let speed = 1;
+
+document.body.addEventListener("touchstart", speedUp);
+document.body.addEventListener("mousedown", speedUp);
+
+function speedUp(){
+  speed = Math.max(0.3, speed - 0.1);
+  document.getElementById("heart").style.animationDuration = speed + "s";
+}
+</script>
+
+</body>
+</html>

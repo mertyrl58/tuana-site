@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Tuana | Yeni Yıl Modu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== TEMA 2 | KIŞ & NEON ===== */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#e8ecff;
+  min-height:100vh;
+  background:
+    radial-gradient(900px 500px at 20% 10%, rgba(124,77,255,.28), transparent 60%),
+    radial-gradient(900px 500px at 80% 30%, rgba(0,212,255,.20), transparent 60%),
+    #05060f;
+  overflow:hidden;
+}
+
+/* Frosted panel */
+.panel{
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+
+/* Neon text */
+.neon{
+  background: linear-gradient(90deg,#7c4dff,#00d4ff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  font-weight:800;
+  text-shadow:0 0 18px rgba(124,77,255,.45);
+}
+
+/* Layout */
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+  position:relative;
+  z-index:5;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.badge{
+  font-size:12px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+}
+
+/* HUD */
+.hud{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+.hud-box{
+  flex:1;
+  background:rgba(0,0,0,.25);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:12px;
+}
+.label{
+  font-size:12px;
+  color:#aab2ff;
+}
+.value{
+  font-size:22px;
+  font-weight:700;
+}
+
+/* Buttons */
+.buttons{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  color:#e8ecff;
+  text-decoration:none;
+  cursor:pointer;
+}
+.btn.primary{
+  background:linear-gradient(90deg,rgba(124,77,255,.6),rgba(0,212,255,.45));
+}
+
+/* Snow canvas */
+#snow{
+  position:fixed;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="snow"></canvas>
+
+<div class="container">
+
+  <div class="top panel">
+    <div>
+      <div class="neon">Tuana</div>
+      <div class="badge">Kış & Neon</div>
+    </div>
+    <div class="badge">Yeni Yıl Modu ❄️</div>
+  </div>
+
+  <div class="hud">
+    <div class="hud-box">
+      <div class="label">Saat</div>
+      <div class="value neon" id="clock">--:--:--</div>
+    </div>
+    <div class="hud-box">
+      <div class="label">Yılbaşına Kalan</div>
+      <div class="value neon" id="countdown">--g --s --d --sn</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="neon">Mutlu Yıllar Tuana 🎄</h2>
+    <p style="color:#aab2ff">
+      Yeni yıla özel kış & neon tema aktif.  
+      Kar yağıyor, zaman akıyor ❄️
+    </p>
+
+    <div class="buttons">
+      <a class="btn" href="ana.html">← Geri Dön</a>
+      <a class="btn" href="kar2.html">🎮 Oyunlar (çok yakında)</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===== SAAT + GERİ SAYIM ===== */
+function pad(n){return String(n).padStart(2,"0");}
+
+function updateTime(){
+  const now=new Date();
+  document.getElementById("clock").textContent=
+    pad(now.getHours())+":"+pad(now.getMinutes())+":"+pad(now.getSeconds());
+
+  const target=new Date(now.getFullYear()+1,0,1,0,0,0);
+  let diff=target-now;
+  if(diff<0) diff=0;
+
+  const s=Math.floor(diff/1000);
+  const d=Math.floor(s/86400);
+  const h=Math.floor((s%86400)/3600);
+  const m=Math.floor((s%3600)/60);
+  const sec=s%60;
+
+  document.getElementById("countdown").textContent=
+    d+"g "+h+"s "+m+"d "+sec+"sn";
+}
+setInterval(updateTime,1000);
+updateTime();
+
+/* ===== KAR ANİMASYONU ===== */
+const canvas=document.getElementById("snow");
+const ctx=canvas.getContext("2d");
+let w,h,flakes=[];
+
+function resize(){
+  w=canvas.width=window.innerWidth;
+  h=canvas.height=window.innerHeight;
+}
+window.addEventListener("resize",resize);
+resize();
+
+for(let i=0;i<120;i++){
+  flakes.push({
+    x:Math.random()*w,
+    y:Math.random()*h,
+    r:1+Math.random()*2.5,
+    v:0.5+Math.random()*2,
+    d:-0.5+Math.random()
+  });
+}
+
+function snow(){
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle="white";
+  flakes.forEach(f=>{
+    ctx.beginPath();
+    ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+    ctx.fill();
+    f.y+=f.v;
+    f.x+=f.d;
+    if(f.y>h){f.y=-10;f.x=Math.random()*w;}
+  });
+  requestAnimationFrame(snow);
+}
+snow();
+</script>
+
+</body>
+</html>

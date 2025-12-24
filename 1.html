@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Tuana Yerli</title>
+
+  <script>
+    // giriş yoksa index'e dön
+    if (localStorage.getItem("tuana_auth") !== "1") {
+      location.replace("index.html");
+    }
+    // kıskanç kontrol
+    const who = localStorage.getItem("tuana_user");
+    if (who && who !== "tuana") {
+      document.documentElement.innerHTML = `
+        <body style="
+          margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+          background:#000;color:#fff;font-family:system-ui;text-align:center;padding:22px;">
+          🚫 Çık buradan.<br><br>
+          Burası <b>Tuana Yerli</b>'ye ait.
+        </body>`;
+    }
+  </script>
+
+  <style>
+    :root{
+      --bg1:#0b1020; --bg2:#2b145d; --bg3:#000;
+      --card:rgba(255,255,255,.08);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --border:rgba(255,255,255,.12);
+      --pink:#ff6aa2;
+      --purple:#a78bfa;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100svh; color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(1100px 600px at 20% 20%, var(--bg2), transparent 60%),
+        radial-gradient(1100px 600px at 85% 75%, #0b3b7a, transparent 60%),
+        linear-gradient(135deg,var(--bg1),var(--bg3));
+      display:grid;
+      place-items:center;
+      padding:18px;
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* yıldızlar */
+    .stars, .stars:before, .stars:after{
+      content:""; position:fixed; inset:0; pointer-events:none;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.8), transparent 40%),
+        radial-gradient(1px 1px at 90px 140px, rgba(255,255,255,.6), transparent 40%),
+        radial-gradient(1px 1px at 160px 80px, rgba(255,255,255,.5), transparent 40%),
+        radial-gradient(2px 2px at 240px 160px, rgba(255,255,255,.7), transparent 40%);
+      background-size:260px 200px;
+      opacity:.22;
+      animation: drift 28s linear infinite;
+    }
+    .stars:before{opacity:.16; animation-duration:45s; filter:blur(.2px);}
+    .stars:after{opacity:.10; animation-duration:70s; filter:blur(.6px);}
+    @keyframes drift{from{transform:translateY(0)}to{transform:translateY(-200px)}}
+
+    .card{
+      width:min(520px,100%);
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:26px 18px 22px;
+      backdrop-filter: blur(10px);
+      box-shadow:0 14px 40px rgba(0,0,0,.30);
+      text-align:center;
+    }
+
+    .name{
+      font-size:clamp(28px,7vw,44px);
+      letter-spacing:.3px;
+      margin:0;
+    }
+
+    /* yavrumm yazısı */
+    .love{
+      margin-top:6px;
+      font-size:clamp(16px,4.5vw,20px);
+      font-weight:600;
+      background: linear-gradient(90deg, var(--pink), var(--purple), #6ec6ff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation: glow 3s ease-in-out infinite;
+    }
+    @keyframes glow{
+      0%,100%{filter:drop-shadow(0 0 6px rgba(255,106,162,.35))}
+      50%{filter:drop-shadow(0 0 14px rgba(167,139,250,.55))}
+    }
+
+    .sub{
+      margin:14px 0 18px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .btn{
+      width:100%;
+      border:0;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--text);
+      min-height:44px;
+      transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="card">
+    <h1 class="name">Tuana Yerli</h1>
+    <h3>yazacan</h3>
+    <div class="love">yavrumm</div>
+    <p class="sub">💜</p>
+    <button class="btn" id="logout">Çıkış Yap</button>
+  </div>
+
+  <script>
+    document.getElementById("logout").onclick = () => {
+      localStorage.removeItem("tuana_auth");
+      localStorage.removeItem("tuana_user");
+      localStorage.removeItem("tuana_target");
+      location.replace("index.html");
+    };
+  </script>
+</body>
+</html>
