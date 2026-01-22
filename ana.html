@@ -4,447 +4,134 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Tuana’ya Özel</title>
-
   <script>
-    // Giriş yoksa index'e dön
-    if (localStorage.getItem("tuana_auth") !== "1") {
-      location.replace("index.html");
-    }
-
-    // Kıskanç Minik Detay 😏 (tuana dışı kullanıcı algılanırsa)
+    if (localStorage.getItem("tuana_auth") !== "1") { location.replace("index.html"); }
     const who = localStorage.getItem("tuana_user");
     if (who && who !== "tuana") {
-      document.documentElement.innerHTML = `
-        <head><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-        <body style="
-          margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
-          background:#000; color:#fff; font-family:system-ui; text-align:center; padding:22px;
-          ">
-          🚫 Çık buradan.<br><br>
-          Burası <b>Tuana Yerli</b>'ye ait.
-        </body>`;
+      document.documentElement.innerHTML = `<head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#000; color:#fff; font-family:system-ui; text-align:center; padding:22px;">🚫 Çık buradan.<br><br>Burası <b>Tuana Yerli</b>'ye ait.</body>`;
     }
   </script>
-
   <style>
-    :root{
-      --bg1:#0b1020; --bg2:#2b145d; --bg3:#000;
-      --card:rgba(255,255,255,.08);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.65);
-      --accent:#a78bfa;
-      --border:rgba(255,255,255,.12);
-    }
+    :root{ --bg1:#0b1020; --bg2:#2b145d; --bg3:#000; --card:rgba(255,255,255,.08); --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.65); --accent:#a78bfa; --border:rgba(255,255,255,.12); }
     *{box-sizing:border-box}
-    body{
-      margin:0; min-height:100svh; color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background:
-        radial-gradient(1100px 600px at 20% 20%, var(--bg2), transparent 60%),
-        radial-gradient(1100px 600px at 85% 75%, #0b3b7a, transparent 60%),
-        linear-gradient(135deg,var(--bg1),var(--bg3));
-      overflow-x:hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .stars, .stars:before, .stars:after{
-      content:""; position:fixed; inset:0; pointer-events:none;
-      background-image:
-        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.8), transparent 40%),
-        radial-gradient(1px 1px at 90px 140px, rgba(255,255,255,.6), transparent 40%),
-        radial-gradient(1px 1px at 160px 80px, rgba(255,255,255,.5), transparent 40%),
-        radial-gradient(2px 2px at 240px 160px, rgba(255,255,255,.7), transparent 40%);
-      background-size: 260px 200px;
-      opacity:.25;
-      animation: drift 28s linear infinite;
-    }
+    body{ margin:0; min-height:100svh; color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; background: radial-gradient(1100px 600px at 20% 20%, var(--bg2), transparent 60%), radial-gradient(1100px 600px at 85% 75%, #0b3b7a, transparent 60%), linear-gradient(135deg,var(--bg1),var(--bg3)); overflow-x:hidden; -webkit-tap-highlight-color: transparent; }
+    .stars, .stars:before, .stars:after{ content:""; position:fixed; inset:0; pointer-events:none; background-image: radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.8), transparent 40%), radial-gradient(1px 1px at 90px 140px, rgba(255,255,255,.6), transparent 40%), radial-gradient(1px 1px at 160px 80px, rgba(255,255,255,.5), transparent 40%), radial-gradient(2px 2px at 240px 160px, rgba(255,255,255,.7), transparent 40%); background-size: 260px 200px; opacity:.25; animation: drift 28s linear infinite; }
     .stars:before{opacity:.18; animation-duration: 45s; filter: blur(.2px);}
     .stars:after{opacity:.12; animation-duration: 70s; filter: blur(.6px);}
     @keyframes drift{ from{transform:translateY(0)} to{transform:translateY(-200px)} }
-
-    header{
-      padding:64px 16px 18px;
-      max-width:980px; margin:0 auto;
-      text-align:center;
-    }
-    .badge{
-      display:inline-flex; gap:8px; align-items:center;
-      padding:9px 12px; border-radius:999px;
-      background:rgba(167,139,250,.12);
-      border:1px solid rgba(167,139,250,.25);
-      font-size:13px;
-      backdrop-filter: blur(10px);
-    }
+    header{ padding:64px 16px 18px; max-width:980px; margin:0 auto; text-align:center; }
+    .badge{ display:inline-flex; gap:8px; align-items:center; padding:9px 12px; border-radius:999px; background:rgba(167,139,250,.12); border:1px solid rgba(167,139,250,.25); font-size:13px; backdrop-filter: blur(10px); }
     h1{margin:14px 0 8px; font-size:clamp(26px,6vw,46px); letter-spacing:.2px}
     p.lead{margin:0 auto; max-width:720px; color:var(--muted); line-height:1.65; font-size:clamp(14px,3.8vw,16px)}
-
     .wrap{max-width:980px; margin:0 auto; padding:14px 16px 28px;}
     .grid{display:grid; gap:12px; grid-template-columns:repeat(12,1fr)}
-    .card{
-      grid-column: span 12;
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:16px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 14px 40px rgba(0,0,0,.28);
-      transform: translateY(6px);
-      opacity:0;
-      transition: .7s ease;
-    }
+    .card{ grid-column: span 12; background:var(--card); border:1px solid var(--border); border-radius:18px; padding:16px; backdrop-filter: blur(10px); box-shadow: 0 14px 40px rgba(0,0,0,.28); transform: translateY(6px); opacity:0; transition: .7s ease; }
     .card.show{transform: translateY(0); opacity:1;}
-    @media(min-width:860px){
-      .card.half{grid-column: span 6;}
-    }
-
+    @media(min-width:860px){ .card.half{grid-column: span 6;} }
     .title{display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:10px}
     .title h2{margin:0; font-size:16px}
-    .pill{
-      font-size:12px; color:rgba(255,255,255,.78);
-      padding:6px 10px; border-radius:999px;
-      background:rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.12);
-      white-space:nowrap;
-    }
+    .pill{ font-size:12px; color:rgba(255,255,255,.78); padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.12); white-space:nowrap; }
     .muted{color:var(--muted); line-height:1.65; margin:0}
     .type{min-height:72px; font-size:15px; line-height:1.75}
-
     .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-    button{
-      border:0; cursor:pointer;
-      padding:12px 14px; border-radius:14px;
-      background:rgba(167,139,250,.18);
-      border:1px solid rgba(167,139,250,.35);
-      color:var(--text);
-      transition:.18s ease;
-      min-height:44px;
-      flex:1 1 auto;
-    }
+    button{ border:0; cursor:pointer; padding:12px 14px; border-radius:14px; background:rgba(167,139,250,.18); border:1px solid rgba(167,139,250,.35); color:var(--text); transition:.18s ease; min-height:44px; flex:1 1 auto; }
     button:hover{transform:translateY(-1px); background:rgba(167,139,250,.26)}
     .ghost{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16)}
-
     .counter{font-size:clamp(20px,6.5vw,28px); font-weight:700; letter-spacing:.2px; margin-top:2px}
     .sub{margin-top:6px; font-size:13px; color:rgba(255,255,255,.60)}
-
-    .topbar{
-      position:sticky; top:0; z-index:5;
-      backdrop-filter: blur(10px);
-      background:linear-gradient(to bottom, rgba(0,0,0,.32), rgba(0,0,0,0));
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .topbar-inner{
-      max-width:980px; margin:0 auto; padding:10px 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
+    .topbar{ position:sticky; top:0; z-index:5; backdrop-filter: blur(10px); background:linear-gradient(to bottom, rgba(0,0,0,.32), rgba(0,0,0,0)); border-bottom:1px solid rgba(255,255,255,.06); }
+    .topbar-inner{ max-width:980px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
     .tiny{font-size:12px; color:rgba(255,255,255,.65)}
-
-    .heart{
-      position:fixed; left:0; top:0; width:10px; height:10px;
-      pointer-events:none; opacity:.9;
-      transform: translate(-50%,-50%) rotate(45deg);
-      background: rgba(255,120,190,.85);
-      animation: floatUp 1.2s ease-out forwards;
-    }
-    .heart:before,.heart:after{
-      content:""; position:absolute; width:10px; height:10px;
-      border-radius:50%; background: inherit;
-    }
+    .heart{ position:fixed; left:0; top:0; width:10px; height:10px; pointer-events:none; opacity:.9; transform: translate(-50%,-50%) rotate(45deg); background: rgba(255,120,190,.85); animation: floatUp 1.2s ease-out forwards; }
+    .heart:before,.heart:after{ content:""; position:absolute; width:10px; height:10px; border-radius:50%; background: inherit; }
     .heart:before{left:-5px; top:0}
     .heart:after{left:0; top:-5px}
     @keyframes floatUp{ to{transform: translate(-50%,-140px) rotate(45deg); opacity:0} }
-
-    /* 🎮 Oyunlar stilleri */
-    .game-box{
-      margin-top:12px;
-      padding:16px;
-      border-radius:14px;
-      background:rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.12);
-      text-align:center;
-    }
-    .game-heart{
-      font-size:40px;
-      cursor:pointer;
-      user-select:none;
-      display:inline-block;
-      position:relative;
-      transition: transform .12s ease;
-    }
+    .game-box{ margin-top:12px; padding:16px; border-radius:14px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.12); text-align:center; }
+    .game-heart{ font-size:40px; cursor:pointer; user-select:none; display:inline-block; position:relative; transition: transform .12s ease; }
     .game-heart:active{transform:scale(.92)}
-    .option{
-      margin-top:10px;
-      padding:10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      cursor:pointer;
-      background:rgba(255,255,255,.02);
-    }
+    .option{ margin-top:10px; padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,.14); cursor:pointer; background:rgba(255,255,255,.02); }
     .option:hover{background:rgba(255,255,255,.08)}
   </style>
 </head>
-
 <body>
   <div class="stars"></div>
-
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="tiny">💜 Özel alan</div>
-      <button class="ghost" id="logout" style="flex:0 0 auto;">Çıkış</button>
-    </div>
-  </div>
-
+  <div class="topbar"><div class="topbar-inner"><div class="tiny">💜 Özel alan</div><button class="ghost" id="logout" style="flex:0 0 auto;">Çıkış</button></div></div>
   <header>
     <div class="badge">💜 Tuana’ya Özel • 🖤 Mert’ten</div>
     <h1>“Tekrar” bazen en güzel kelime.</h1>
     <p class="lead">Bu sayfa, birlikte olduğumuz günlerin küçük bir hatırlatıcısı.</p>
   </header>
-
   <main class="wrap">
     <section class="grid">
-
       <div class="card half" id="card1">
-        <div class="title">
-          <h2>Mini Mektup</h2>
-          <span class="pill">📌 Kısa + net</span>
-        </div>
+        <div class="title"><h2>Mini Mektup</h2><span class="pill">📌 Kısa + net</span></div>
         <div class="type" id="typeBox"></div>
-        <div class="btns">
-          <button id="replay">Yeniden yaz</button>
-          <button class="ghost" id="copy">Kopyala</button>
-        </div>
+        <div class="btns"><button id="replay">Yeniden yaz</button><button class="ghost" id="copy">Kopyala</button></div>
       </div>
-
       <div class="card half" id="card2">
-        <div class="title">
-          <h2>Sevgili sayacı</h2>
-          <span class="pill">⏳</span>
-        </div>
+        <div class="title"><h2>Sevgili sayacı</h2><span class="pill">⏳</span></div>
         <div class="counter" id="since">hesaplanıyor...</div>
         <div class="sub" id="dateLabel"></div>
       </div>
-
       <div class="card" id="cardHeart">
-        <div class="title">
-          <h2>Kalp Ritmi</h2>
-          <span class="pill">❤️</span>
-        </div>
+        <div class="title"><h2>Kalp Ritmi</h2><span class="pill">❤️</span></div>
         <p class="muted">Yanındayken kalbim böyle.</p>
+        <div class="btns"><button onclick="location.href='kalp.html'">Dokun</button><button class="ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">Yukarı</button></div>
+      </div>
+
+      <div class="card" id="cardGallery">
+        <div class="title"><h2>Anılarımız</h2><span class="pill">📸</span></div>
+        <p class="muted">Bütün güzel fotoğraflarımız burada saklı.</p>
         <div class="btns">
-          <button id="goHeart">Dokun</button>
-          <button class="ghost" id="goBackTop">Yukarı</button>
+          <button onclick="location.href='3.html'" style="background:rgba(255, 77, 109, 0.2); border-color:rgba(255, 77, 109, 0.4);">
+            Galeriye Git
+          </button>
         </div>
       </div>
 
       <div class="card" id="card3">
-        <div class="title">
-          <h2>Gizli Buton</h2>
-          <span class="pill">😏</span>
-        </div>
+        <div class="title"><h2>Gizli Buton</h2><span class="pill">😏</span></div>
         <p class="muted">Buna basınca küçük bir mesaj çıkacak.</p>
-        <div class="btns">
-          <button id="surprise">Bas</button>
-        </div>
+        <div class="btns"><button onclick="alert('Seni çok seviyorum yavrumm')">Bas</button></div>
       </div>
-
-
-      <!-- 🎮 OYUNLAR (EKLENDİ) -->
       <div class="card" id="games">
-        <div class="title">
-          <h2>🎮 Oyunlar</h2>
-          <span class="pill">mini</span>
-        </div>
-        <p class="muted">Biraz eğlenelim 😌</p>
-
-        <div class="btns">
-          <button id="btnCatch">Kalbi Yakala</button>
-          <button id="btnSentence">Eksik Cümle</button>
-          <button id="btnJealous">Kıskançlık Testi</button>
-        </div>
-
+        <div class="title"><h2>🎮 Oyunlar</h2><span class="pill">mini</span></div>
+        <div class="btns"><button id="btnCatch">Kalbi Yakala</button><button id="btnSentence">Eksik Cümle</button><button id="btnJealous">Kıskançlık Testi</button></div>
         <div id="gameArea" style="margin-top:16px"></div>
       </div>
-
       <div class="card" id="card5">
-    <div class="title">
-       <h2>Mutlu Yıllar</h2>
-      <span class="pill">❄️</span>
+        <div class="title"><h2>Mutlu Yıllar</h2><span class="pill">❄️</span></div>
+        <p class="muted">Yıl Başından sonra Her Şey Çok Güzel Olacak :]</p>
+        <div class="btns"><button onclick="window.location.href='kar.html'">Yıl Başı</button></div>
       </div>
-
-       <p class="muted">Yıl Başından sonra Her Şey Çok Güzel Olacak :]</p>
-
-    <div class="btns">
-       <button id="buttons" onclick="window.location.href='kar.html'">
-        Yıl Başı
-       </button>
-       </div>
-       </div>
-
-
     </section>
   </main>
-
   <script>
-    // Fade-in cards
     const cards = [...document.querySelectorAll('.card')];
-    const io = new IntersectionObserver(entries=>{
-      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
-    },{threshold:.15});
+    const io = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); }); },{threshold:.15});
     cards.forEach(c=>io.observe(c));
-
-    // Typewriter
-    const message =
-`Tuana,
-Ben “haklı çıkmayı” değil, “yanında kalmayı” seçiyorum.
-Kısa: Özür + emek + devam.`;
-
+    const message = `Tuana,\nBen “haklı çıkmayı” değil, “yanında kalmayı” seçiyorum.\nKısa: Özür + emek + devam.`;
     const typeBox = document.getElementById('typeBox');
-    function typeWrite(text){
-      typeBox.textContent = "";
-      let i=0;
-      const t = setInterval(()=>{
-        typeBox.textContent += text[i++] || "";
-        if(i>=text.length) clearInterval(t);
-      }, 18);
-    }
+    function typeWrite(text){ typeBox.textContent=""; let i=0; const t=setInterval(()=>{ typeBox.textContent+=text[i++]||""; if(i>=text.length) clearInterval(t); },18); }
     typeWrite(message);
-
-    document.getElementById('replay').onclick = ()=> typeWrite(message);
-    document.getElementById('copy').onclick = async ()=>{
-      try{ await navigator.clipboard.writeText(typeBox.textContent); alert("Kopyalandı."); }
-      catch(e){ alert("Kopyalanamadı."); }
-    };
-
-    // Hearts (genel sayfa efekti)
-    addEventListener('pointerdown', (e)=>{
-      const h = document.createElement('div');
-      h.className='heart';
-      h.style.left = e.clientX + 'px';
-      h.style.top  = e.clientY + 'px';
-      document.body.appendChild(h);
-      setTimeout(()=>h.remove(), 1200);
-    });
-
-    // Sevgili sayacı (2025-06-17 Salı)
+    document.getElementById('replay').onclick=()=>typeWrite(message);
+    document.getElementById('copy').onclick=async()=>{ try{await navigator.clipboard.writeText(typeBox.textContent);alert("Kopyalandı.");}catch(e){alert("Hata!");}};
+    addEventListener('pointerdown', (e)=>{ const h=document.createElement('div'); h.className='heart'; h.style.left=e.clientX+'px'; h.style.top=e.clientY+'px'; document.body.appendChild(h); setTimeout(()=>h.remove(),1200); });
     const startDate = new Date("2025-06-17T00:00:00");
-    const dateLabel = document.getElementById('dateLabel');
-    const since = document.getElementById('since');
-    const fmt = n => String(n).padStart(2,'0');
-
     function updateCounter(){
-      const now = new Date();
-      const diff = Math.max(0, now - startDate);
-      const days = Math.floor(diff / (1000*60*60*24));
-      const hrs  = Math.floor(diff / (1000*60*60)) % 24;
-      const mins = Math.floor(diff / (1000*60)) % 60;
-      since.textContent = `${days} gün ${fmt(hrs)}:${fmt(mins)}`;
-      dateLabel.textContent = `Başlangıç: ${startDate.toLocaleDateString('tr-TR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})}`;
+      const now = new Date(); const diff = Math.max(0, now - startDate);
+      const days = Math.floor(diff / (1000*60*60*24)); const hrs = Math.floor(diff / (1000*60*60)) % 24; const mins = Math.floor(diff / (1000*60)) % 60;
+      document.getElementById('since').textContent = `${days} gün ${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}`;
+      document.getElementById('dateLabel').textContent = `Başlangıç: ${startDate.toLocaleDateString('tr-TR',{year:'numeric',month:'long',day:'numeric',weekday:'long'})}`;
     }
-    updateCounter();
-    setInterval(updateCounter, 30_000);
-
-    // Gizli buton
-    document.getElementById('surprise').onclick = ()=>{
-      alert("Seni çok seviyorum yavrumm");
-    };
-
-    // Kalp sayfasına geç
-    document.getElementById('goHeart').onclick = ()=>{
-      location.href = "kalp.html";
-    };
-    document.getElementById('goBackTop').onclick = ()=>{
-      window.scrollTo({top:0, behavior:"smooth"});
-    };
-
-    // Çıkış
-    document.getElementById('logout').onclick = ()=>{
-      localStorage.removeItem("tuana_auth");
-      localStorage.removeItem("tuana_user");
-      localStorage.removeItem("tuana_target");
-      location.replace("index.html");
-    };
-
-    /* =========================
-       🎮 OYUNLAR (3 mini oyun)
-       ========================= */
-    const gameArea = document.getElementById("gameArea");
-    let catchTimer = null;
-
-    function clearGame(){
-      if (catchTimer) { clearInterval(catchTimer); catchTimer = null; }
-      gameArea.innerHTML = "";
-    }
-
-    // 1) Kalbi Yakala
-    function gameCatch(){
-      clearGame();
-      const box = document.createElement("div");
-      box.className = "game-box";
-      box.innerHTML = `
-        <p style="margin:0 0 10px">Kalbi yakala 💜</p>
-        <div class="game-heart" id="movingHeart">💜</div>
-        <p class="muted" id="catchMsg" style="margin-top:10px"></p>
-      `;
-      gameArea.appendChild(box);
-
-      const heart = document.getElementById("movingHeart");
-      const msg = document.getElementById("catchMsg");
-
-      heart.onclick = ()=>{
-        msg.textContent = "Zaten hep sende.";
-        heart.style.pointerEvents = "none";
-        if (catchTimer) { clearInterval(catchTimer); catchTimer = null; }
-      };
-
-      catchTimer = setInterval(()=>{
-        const x = Math.random()*160 - 80;
-        const y = Math.random()*70  - 35;
-        heart.style.transform = `translate(${x}px, ${y}px)`;
-      }, 550);
-    }
-
-    // 2) Eksik Cümle
-    function gameSentence(){
-      clearGame();
-      gameArea.innerHTML = `
-        <div class="game-box">
-          <p style="margin:0 0 8px">Yanımda olunca her şey…</p>
-          <div class="option" data-ok="1">daha güzel</div>
-          <div class="option" data-ok="0">daha zor</div>
-          <div class="option" data-ok="0">daha kötü</div>
-          <p class="muted" id="sentenceMsg" style="margin-top:10px"></p>
-        </div>
-      `;
-      const msg = document.getElementById("sentenceMsg");
-      [...gameArea.querySelectorAll(".option")].forEach(opt=>{
-        opt.onclick = ()=>{
-          if (opt.dataset.ok === "1") msg.textContent = "💜 Doğru cevap.";
-          else msg.textContent = "😅 Olmadı.";
-        };
-      });
-    }
-
-    // 3) Kıskançlık Testi
-    function gameJealous(){
-      clearGame();
-      gameArea.innerHTML = `
-        <div class="game-box">
-          <p style="margin:0 0 8px">Bu sayfa kimin?</p>
-          <div class="option" data-ok="1">Tuana Yerli</div>
-          <div class="option" data-ok="0">Başka biri</div>
-          <p class="muted" id="jealousMsg" style="margin-top:10px"></p>
-        </div>
-      `;
-      const msg = document.getElementById("jealousMsg");
-      [...gameArea.querySelectorAll(".option")].forEach(opt=>{
-        opt.onclick = ()=>{
-          if (opt.dataset.ok === "1") msg.textContent = "😏 Aynen öyle.";
-          else msg.textContent = "🚫 Olmaz.";
-        };
-      });
-    }
-
-    document.getElementById("btnCatch").onclick = gameCatch;
-    document.getElementById("btnSentence").onclick = gameSentence;
-    document.getElementById("btnJealous").onclick = gameJealous;
+    updateCounter(); setInterval(updateCounter, 30000);
+    document.getElementById('logout').onclick=()=>{ localStorage.clear(); location.replace("index.html"); };
+    const gameArea=document.getElementById("gameArea"); let catchTimer=null;
+    function clearGame(){ if(catchTimer) clearInterval(catchTimer); gameArea.innerHTML=""; }
+    document.getElementById("btnCatch").onclick=()=>{ clearGame(); gameArea.innerHTML=`<div class="game-box"><p>Kalbi yakala 💜</p><div class="game-heart" id="movingHeart">💜</div><p id="catchMsg"></p></div>`; const h=document.getElementById("movingHeart"); h.onclick=()=>{document.getElementById("catchMsg").textContent="Zaten hep sende."; h.style.pointerEvents="none"; clearInterval(catchTimer);}; catchTimer=setInterval(()=>{ h.style.transform=`translate(${Math.random()*160-80}px,${Math.random()*70-35}px)`; },550); };
+    document.getElementById("btnSentence").onclick=()=>{ clearGame(); gameArea.innerHTML=`<div class="game-box"><p>Yanımda olunca her şey…</p><div class="option" onclick="this.parentElement.lastElementChild.textContent='💜 Doğru cevap.'">daha güzel</div><div class="option" onclick="this.parentElement.lastElementChild.textContent='😅 Olmadı.'">daha zor</div><p class="muted" style="margin-top:10px"></p></div>`; };
+    document.getElementById("btnJealous").onclick=()=>{ clearGame(); gameArea.innerHTML=`<div class="game-box"><p>Bu sayfa kimin?</p><div class="option" onclick="this.parentElement.lastElementChild.textContent='😏 Aynen öyle.'">Tuana Yerli</div><div class="option" onclick="this.parentElement.lastElementChild.textContent='🚫 Olmaz.'">Başka biri</div><p class="muted" style="margin-top:10px"></p></div>`; };
   </script>
 </body>
 </html>
